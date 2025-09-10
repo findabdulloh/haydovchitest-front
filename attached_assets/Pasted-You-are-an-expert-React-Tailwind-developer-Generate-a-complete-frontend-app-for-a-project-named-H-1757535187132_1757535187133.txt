@@ -1,0 +1,22 @@
+You are an expert React+Tailwind developer. Generate a complete frontend app for a project named **Haydovchi Test**.
+
+
+Requirements:
+- Use React (functional components + hooks) and Tailwind CSS for styling.
+- Use React Router for navigation.
+- App must be responsive (desktop with left navigation and top navbar; mobile with top navbar and a collapsible left drawer).
+- Authentication state and user info come from an existing API (use the provided API endpoints in the `apiClient` module). Show Sign In button when not logged, show Profile button when logged. Profile dropdown must include editable Name field and Sign out button.
+- Left navigation lists pages: Dashboard (main), Results, Bilets, Test by Topics, Real Test.
+- Dashboard: short cards that describe pages.
+- Results page: chart of answered correct / incorrect / not submitted (use a simple bar or doughnut built with a small chart library — if unavailable, create a lightweight SVG chart). Also show two percentages (Correctness, Completion).
+- Bilets page: list of 58 bilets (data from API). Each bilet: number, question count (usually 20), passed indicator (green/red), and if passed show number of correct answers. Start test button.
+- Test by Topics: similar to Bilets but each item has a name (1-5 words) and variable question counts (5-50+). Start test button.
+- Real Test: shows info and a button to start. Real test rules: 20 questions, timer 25 minutes, 3 mistakes leads to immediate stop (fail). Show progress and question navigation panel (list of question numbers to jump).
+- Test Page (used by all three test-types): multiple-choice single-answer questions (3-6 options). Show question text, options, Next/Prev, submit. Show timer (if applicable), mistakes count (for Real Test), and ability to select any question via question number list.
+- All API interaction should go through a central `apiClient` utility. Use `fetch` and async/await. Provide placeholder endpoints and examples of expected JSON shapes.
+- Provide clear file structure and all code in React single-file format (for Replit quickstart) or multiple small files if you prefer — but provide the entire code to run locally.
+- Use Tailwind utility classes for layout and responsive behavior. Keep visuals clean and modern.
+- Add comments in code explaining where to plug actual API endpoints.
+
+
+Produce the code now. Don't ask for more questions. If any API details are unknown, add TODO comments showing what the API should return.
