@@ -4,7 +4,7 @@ import { apiClient, type AuthUser } from '@/lib/apiClient';
 interface AuthContextType {
   user: AuthUser | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (phone: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   updateProfile: (name: string) => Promise<void>;
 }
@@ -31,10 +31,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkAuth();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (phone: string, password: string) => {
     setLoading(true);
     try {
-      const user = await apiClient.login(email, password);
+      const user = await apiClient.login(phone, password);
       setUser(user);
     } finally {
       setLoading(false);
