@@ -39,57 +39,55 @@ export function TestResultChart({ results }: TestResultChartProps) {
           Your performance across all completed tests
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-6">
+        <div className="h-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={data}
+                cx="50%"
+                cy="50%"
+                innerRadius={60}
+                outerRadius={120}
+                paddingAngle={5}
+                dataKey="value"
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="h-[200px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={data}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={40}
-                  outerRadius={80}
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  {data.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Correctness</span>
-                <span className="text-2xl font-bold" data-testid="text-correctness-percentage">
-                  {results.correctnessPercentage}%
-                </span>
-              </div>
-              <div className="w-full bg-secondary rounded-full h-2">
-                <div
-                  className="bg-chart-1 h-2 rounded-full transition-all"
-                  style={{ width: `${results.correctnessPercentage}%` }}
-                />
-              </div>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Correctness</span>
+              <span className="text-2xl font-bold" data-testid="text-correctness-percentage">
+                {results.correctnessPercentage}%
+              </span>
             </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Completion</span>
-                <span className="text-2xl font-bold" data-testid="text-completion-percentage">
-                  {results.completionPercentage}%
-                </span>
-              </div>
-              <div className="w-full bg-secondary rounded-full h-2">
-                <div
-                  className="bg-chart-3 h-2 rounded-full transition-all"
-                  style={{ width: `${results.completionPercentage}%` }}
-                />
-              </div>
+            <div className="w-full bg-secondary rounded-full h-2">
+              <div
+                className="bg-chart-1 h-2 rounded-full transition-all"
+                style={{ width: `${results.correctnessPercentage}%` }}
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium">Completion</span>
+              <span className="text-2xl font-bold" data-testid="text-completion-percentage">
+                {results.completionPercentage}%
+              </span>
+            </div>
+            <div className="w-full bg-secondary rounded-full h-2">
+              <div
+                className="bg-chart-3 h-2 rounded-full transition-all"
+                style={{ width: `${results.completionPercentage}%` }}
+              />
             </div>
           </div>
         </div>

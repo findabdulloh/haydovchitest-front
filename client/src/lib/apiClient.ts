@@ -4,7 +4,7 @@ const API_BASE_URL = '/api';
 interface AuthUser {
   id: string;
   name: string;
-  email: string;
+  phone: string;
 }
 
 interface TestQuestion {
@@ -56,14 +56,14 @@ class ApiClient {
   }
 
   // Authentication
-  async login(email: string, password: string): Promise<AuthUser> {
+  async login(phone: string, password: string): Promise<AuthUser> {
     // TODO: Replace with real API call
-    console.log('Login attempt:', { email, password });
+    console.log('Login attempt:', { phone, password });
     await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
     return {
       id: '1',
       name: 'Test User',
-      email,
+      phone,
     };
   }
 
@@ -79,7 +79,7 @@ class ApiClient {
     return {
       id: '1',
       name: 'Test User',
-      email: 'test@example.com',
+      phone: '+1-555-0123',
     };
   }
 
@@ -90,7 +90,7 @@ class ApiClient {
     return {
       id: '1',
       name,
-      email: 'test@example.com',
+      phone: '+1-555-0123',
     };
   }
 
