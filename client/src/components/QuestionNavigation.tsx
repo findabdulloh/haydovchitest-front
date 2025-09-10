@@ -48,7 +48,7 @@ export function QuestionNavigation({
                 key={questionNumber}
                 variant={getButtonVariant(questionNumber)}
                 size="sm"
-                className="p-0 text-xs min-w-6 min-h-6"
+                className="text-xs"
                 onClick={() => handleQuestionClick(questionNumber)}
                 data-testid={`button-question-${questionNumber}`}
               >

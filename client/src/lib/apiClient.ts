@@ -58,7 +58,6 @@ class ApiClient {
   // Authentication
   async login(phone: string, password: string): Promise<AuthUser> {
     // TODO: Replace with real API call
-    console.log('Login attempt with phone number');
     await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
     return {
       id: '1',
@@ -69,7 +68,6 @@ class ApiClient {
 
   async logout(): Promise<void> {
     // TODO: Replace with real API call
-    console.log('Logout');
     await new Promise(resolve => setTimeout(resolve, 500));
   }
 
@@ -85,7 +83,6 @@ class ApiClient {
 
   async register(phone: string, password: string, name: string): Promise<AuthUser> {
     // TODO: Replace with real API call
-    console.log('Registration attempt with phone number');
     await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
     return {
       id: '2',
@@ -96,7 +93,6 @@ class ApiClient {
 
   async updateProfile(name: string): Promise<AuthUser> {
     // TODO: Replace with real API call
-    console.log('Update profile:', { name });
     await new Promise(resolve => setTimeout(resolve, 500));
     return {
       id: '1',

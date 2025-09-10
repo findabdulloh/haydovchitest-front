@@ -7,23 +7,33 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 
 export function LoginForm() {
+  const [isLogin, setIsLogin] = useState(true);
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
-  const { login, loading } = useAuth();
+  const [name, setName] = useState('');
+  const { login, register, loading } = useAuth();
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await login(phone, password);
-      toast({
-        title: 'Welcome back!',
-        description: 'You have been successfully signed in.',
-      });
+      if (isLogin) {
+        await login(phone, password);
+        toast({
+          title: 'Welcome back!',
+          description: 'You have been successfully signed in.',
+        });
+      } else {
+        await register(phone, password, name);
+        toast({
+          title: 'Account created!',
+          description: 'Your account has been created successfully.',
+        });
+      }
     } catch (error) {
       toast({
-        title: 'Sign in failed',
-        description: 'Please check your credentials and try again.',
+        title: isLogin ? 'Sign in failed' : 'Registration failed',
+        description: 'Please check your information and try again.',
         variant: 'destructive',
       });
     }
@@ -35,11 +45,25 @@ export function LoginForm() {
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Haydovchi Test</CardTitle>
           <CardDescription>
-            Sign in to access your test preparation platform
+            {isLogin ? 'Sign in to access your test preparation platform' : 'Create an account to start your test preparation'}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {!isLogin && (
+              <div className="space-y-2">
+                <Label htmlFor="name">Full Name</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Enter your full name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  data-testid="input-name"
+                />
+              </div>
+            )}
             <div className="space-y-2">
               <Label htmlFor="phone">Phone Number</Label>
               <Input
@@ -68,11 +92,21 @@ export function LoginForm() {
               type="submit"
               className="w-full"
               disabled={loading}
-              data-testid="button-sign-in"
+              data-testid={isLogin ? "button-sign-in" : "button-register"}
             >
-              {loading ? 'Signing in...' : 'Sign In'}
+              {loading ? (isLogin ? 'Signing in...' : 'Creating account...') : (isLogin ? 'Sign In' : 'Create Account')}
             </Button>
           </form>
+          <div className="mt-4 text-center">
+            <button
+              type="button"
+              onClick={() => setIsLogin(!isLogin)}
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              data-testid="button-toggle-mode"
+            >
+              {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+            </button>
+          </div>
         </CardContent>
       </Card>
     </div>
