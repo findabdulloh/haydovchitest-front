@@ -1,9 +1,9 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import type { TestResult } from '@/lib/apiClient';
+import type { ChartData } from '@/lib/apiClient';
 
 interface TestResultChartProps {
-  results: TestResult;
+  results: ChartData;
 }
 
 const COLORS = {

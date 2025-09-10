@@ -2,6 +2,9 @@ import { BarChart3, BookOpen, Target, Trophy } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'wouter';
+import { useQuery } from '@tanstack/react-query';
+import { apiClient } from '@/lib/apiClient';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const dashboardCards = [
   {
@@ -35,6 +38,11 @@ const dashboardCards = [
 ];
 
 export default function Dashboard() {
+  const { data: stats, isLoading: statsLoading } = useQuery({
+    queryKey: ['/api/stats'],
+    queryFn: () => apiClient.getUserStats(),
+  });
+
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -74,8 +82,16 @@ export default function Dashboard() {
             <CardTitle className="text-sm font-medium">Total Tests Taken</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold" data-testid="text-total-tests">24</div>
-            <p className="text-xs text-muted-foreground">+3 from last week</p>
+            {statsLoading ? (
+              <Skeleton className="h-8 w-16" />
+            ) : (
+              <div className="text-2xl font-bold" data-testid="text-total-tests">
+                {stats?.totalTests || 0}
+              </div>
+            )}
+            <p className="text-xs text-muted-foreground">
+              {stats?.totalTests === 0 ? 'Take your first test!' : 'Keep practicing!'}
+            </p>
           </CardContent>
         </Card>
         
@@ -84,8 +100,16 @@ export default function Dashboard() {
             <CardTitle className="text-sm font-medium">Average Score</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold" data-testid="text-average-score">76%</div>
-            <p className="text-xs text-muted-foreground">+5% from last month</p>
+            {statsLoading ? (
+              <Skeleton className="h-8 w-16" />
+            ) : (
+              <div className="text-2xl font-bold" data-testid="text-average-score">
+                {stats?.averageScore || 0}%
+              </div>
+            )}
+            <p className="text-xs text-muted-foreground">
+              {(stats?.averageScore || 0) >= 80 ? 'Excellent work!' : 'Room for improvement'}
+            </p>
           </CardContent>
         </Card>
         
@@ -94,8 +118,16 @@ export default function Dashboard() {
             <CardTitle className="text-sm font-medium">Study Streak</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold" data-testid="text-study-streak">12 days</div>
-            <p className="text-xs text-muted-foreground">Keep it up!</p>
+            {statsLoading ? (
+              <Skeleton className="h-8 w-16" />
+            ) : (
+              <div className="text-2xl font-bold" data-testid="text-study-streak">
+                {stats?.studyStreak || 0} days
+              </div>
+            )}
+            <p className="text-xs text-muted-foreground">
+              {(stats?.studyStreak || 0) === 0 ? 'Start your streak today!' : 'Keep it up!'}
+            </p>
           </CardContent>
         </Card>
       </div>

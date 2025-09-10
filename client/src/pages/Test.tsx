@@ -25,6 +25,7 @@ export default function Test() {
   const [mistakes, setMistakes] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [testStarted, setTestStarted] = useState(false);
+  const [startTime, setStartTime] = useState<number>(0);
   
   const { data: questions, isLoading, error } = useQuery({
     queryKey: ['/api/test', testType, testId],
@@ -32,18 +33,22 @@ export default function Test() {
   });
   
   useEffect(() => {
-    if (questions && questions.length > 0) {
+    if (questions && questions.length > 0 && !testStarted) {
       setTestStarted(true);
+      setStartTime(Date.now());
     }
-  }, [questions]);
+  }, [questions, testStarted]);
   
   const currentQuestionData = questions?.[currentQuestion - 1];
-  const answeredQuestions = new Set(Object.keys(answers).map(q => parseInt(q)));
+  const answeredQuestions = new Set(
+    Object.keys(answers).filter(questionId => 
+      questions?.some(q => q.id === questionId)
+    ).map((_, index) => index + 1) // Convert to question numbers for display
+  );
   const isRealTest = testType === 'real';
   
   const handleAnswerChange = (questionId: string, answerIndex: number) => {
-    setAnswers(prev => ({ ...prev, [currentQuestion]: answerIndex }));
-    console.log(`Question ${currentQuestion} answered with option ${answerIndex}`);
+    setAnswers(prev => ({ ...prev, [questionId]: answerIndex }));
   };
   
   const handlePrevious = () => {
@@ -76,10 +81,11 @@ export default function Test() {
     
     setIsSubmitting(true);
     try {
-      await apiClient.submitTest(testType, testId, answers);
+      const timeSpent = Math.floor((Date.now() - startTime) / 1000); // in seconds
+      const result = await apiClient.submitTest(testType, testId, answers, timeSpent);
       toast({
         title: 'Test submitted!',
-        description: 'Your answers have been saved successfully.',
+        description: `Score: ${result.score}% (${result.correctAnswers}/${result.totalQuestions})`,
       });
       setLocation('/results');
     } catch (error) {
@@ -164,11 +170,11 @@ export default function Test() {
             </CardHeader>
             <CardContent className="space-y-6">
               <p className="text-base leading-relaxed" data-testid="text-question">
-                {currentQuestionData?.text}
+                {currentQuestionData?.questionText}
               </p>
               
               <RadioGroup
-                value={answers[currentQuestion]?.toString()}
+                value={answers[currentQuestionData?.id || '']?.toString()}
                 onValueChange={(value) => 
                   handleAnswerChange(currentQuestionData!.id, parseInt(value))
                 }

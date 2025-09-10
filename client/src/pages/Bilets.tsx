@@ -68,7 +68,7 @@ export default function Bilets() {
             description={`Standard test bilet with ${bilet.questionCount} questions`}
             questionCount={bilet.questionCount}
             passed={bilet.passed}
-            correctAnswers={bilet.correctAnswers}
+            correctAnswers={bilet.correctAnswers ?? undefined}
             onStart={() => handleStartTest(bilet.id)}
             testNumber={bilet.number}
           />
