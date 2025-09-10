@@ -36,19 +36,19 @@ export function QuestionNavigation({
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-sm font-medium">Question Navigation</CardTitle>
+    <Card className="compact">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-xs font-medium">Questions</CardTitle>
       </CardHeader>
-      <CardContent>
-        <ScrollArea className="h-[200px]">
-          <div className="grid grid-cols-5 gap-2">
+      <CardContent className="pt-0">
+        <ScrollArea className="h-[120px]">
+          <div className="grid grid-cols-6 gap-1">
             {questions.map((questionNumber) => (
               <Button
                 key={questionNumber}
                 variant={getButtonVariant(questionNumber)}
                 size="sm"
-                className="h-8 w-8 p-0 text-xs"
+                className="p-0 text-xs min-w-6 min-h-6"
                 onClick={() => handleQuestionClick(questionNumber)}
                 data-testid={`button-question-${questionNumber}`}
               >
@@ -57,18 +57,18 @@ export function QuestionNavigation({
             ))}
           </div>
         </ScrollArea>
-        <div className="mt-4 flex flex-wrap gap-2 text-xs text-muted-foreground">
+        <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground">
           <div className="flex items-center space-x-1">
-            <div className="h-2 w-2 rounded-full bg-primary" />
-            <span>Current</span>
+            <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+            <span className="text-xs">Current</span>
           </div>
           <div className="flex items-center space-x-1">
-            <div className="h-2 w-2 rounded-full bg-secondary" />
-            <span>Answered</span>
+            <div className="h-1.5 w-1.5 rounded-full bg-secondary" />
+            <span className="text-xs">Done</span>
           </div>
           <div className="flex items-center space-x-1">
-            <div className="h-2 w-2 rounded-full border border-border" />
-            <span>Unanswered</span>
+            <div className="h-1.5 w-1.5 rounded-full border border-border" />
+            <span className="text-xs">Todo</span>
           </div>
         </div>
       </CardContent>
