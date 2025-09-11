@@ -14,8 +14,14 @@ export const users = pgTable("users", {
 export const bilets = pgTable("bilets", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   number: integer("number").notNull().unique(),
-  title: text("title").notNull(),
-  description: text("description"),
+  title: text("title").notNull(), // Legacy field
+  titleUz: text("title_uz").notNull(),
+  titleRu: text("title_ru").notNull(),
+  titleUzC: text("title_uzc").notNull(),
+  description: text("description"), // Legacy field
+  descriptionUz: text("description_uz"),
+  descriptionRu: text("description_ru"),
+  descriptionUzC: text("description_uzc"),
   questionCount: integer("question_count").notNull().default(20),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
@@ -24,18 +30,33 @@ export const questions = pgTable("questions", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   biletId: varchar("bilet_id").references(() => bilets.id),
   topicId: varchar("topic_id").references(() => topics.id),
-  questionText: text("question_text").notNull(),
-  options: json("options").$type<string[]>().notNull(),
+  questionText: text("question_text").notNull(), // Legacy field
+  questionTextUz: text("question_text_uz").notNull(),
+  questionTextRu: text("question_text_ru").notNull(),
+  questionTextUzC: text("question_text_uzc").notNull(),
+  options: json("options").$type<string[]>().notNull(), // Legacy field
+  optionsUz: json("options_uz").$type<string[]>().notNull(),
+  optionsRu: json("options_ru").$type<string[]>().notNull(),
+  optionsUzC: json("options_uzc").$type<string[]>().notNull(),
   correctAnswer: integer("correct_answer").notNull(),
   explanation: text("explanation"),
+  explanationUz: text("explanation_uz"),
+  explanationRu: text("explanation_ru"),
+  explanationUzC: text("explanation_uzc"),
   imageUrl: text("image_url"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export const topics = pgTable("topics", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  name: text("name").notNull().unique(),
-  description: text("description"),
+  name: text("name").notNull().unique(), // Legacy field
+  nameUz: text("name_uz").notNull(),
+  nameRu: text("name_ru").notNull(),
+  nameUzC: text("name_uzc").notNull(),
+  description: text("description"), // Legacy field
+  descriptionUz: text("description_uz"),
+  descriptionRu: text("description_ru"),
+  descriptionUzC: text("description_uzc"),
   questionCount: integer("question_count").notNull().default(0),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });

@@ -65,7 +65,13 @@ export default function Topics() {
           <TestCard
             key={topic.id}
             title={topic.name}
+            titleUz={topic.nameUz}
+            titleRu={topic.nameRu}
+            titleUzC={topic.nameUzC}
             description={`Targeted practice for ${topic.name.toLowerCase()} concepts`}
+            descriptionUz={topic.descriptionUz}
+            descriptionRu={topic.descriptionRu}
+            descriptionUzC={topic.descriptionUzC}
             questionCount={topic.questionCount}
             passed={topic.passed}
             correctAnswers={topic.correctAnswers}

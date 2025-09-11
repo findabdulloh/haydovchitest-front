@@ -8,6 +8,8 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { LanguageProvider } from "@/contexts/LanguageContext";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { LoginForm } from "@/components/LoginForm";
 import { ProfileDropdown } from "@/components/ProfileDropdown";
 import { Button } from "@/components/ui/button";
@@ -69,6 +71,7 @@ function AuthenticatedApp() {
               <h2 className="text-lg font-semibold">Haydovchi Test</h2>
             </div>
             <div className="flex items-center gap-2">
+              <LanguageToggle />
               <ThemeToggle />
               <ProfileDropdown />
             </div>
@@ -86,12 +89,14 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <AuthProvider>
-          <TooltipProvider>
-            <AuthenticatedApp />
-            <Toaster />
-          </TooltipProvider>
-        </AuthProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <TooltipProvider>
+              <AuthenticatedApp />
+              <Toaster />
+            </TooltipProvider>
+          </AuthProvider>
+        </LanguageProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

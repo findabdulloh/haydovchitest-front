@@ -63,17 +63,67 @@ export class MemStorage implements IStorage {
   private initializeSampleData() {
     // Create sample topics
     const topics = [
-      { id: randomUUID(), name: 'Road Signs', description: 'Traffic signs and their meanings', questionCount: 15 },
-      { id: randomUUID(), name: 'Traffic Rules', description: 'Basic traffic regulations', questionCount: 25 },
-      { id: randomUUID(), name: 'Vehicle Safety', description: 'Safety procedures and checks', questionCount: 12 },
-      { id: randomUUID(), name: 'Emergency Situations', description: 'Handling emergencies on the road', questionCount: 8 },
+      { 
+        id: randomUUID(), 
+        name: 'Road Signs', 
+        nameUz: 'Yo\'l belgilari', 
+        nameRu: 'Дорожные знаки', 
+        nameUzC: 'Йўл белгилари',
+        description: 'Traffic signs and their meanings', 
+        descriptionUz: 'Yo\'l belgilari va ularning ma\'nolari',
+        descriptionRu: 'Дорожные знаки и их значения',
+        descriptionUzC: 'Йўл белгилари ва уларнинг маънолари',
+        questionCount: 15 
+      },
+      { 
+        id: randomUUID(), 
+        name: 'Traffic Rules', 
+        nameUz: 'Yo\'l qoidalari', 
+        nameRu: 'Правила дорожного движения', 
+        nameUzC: 'Йўл қоидалари',
+        description: 'Basic traffic regulations', 
+        descriptionUz: 'Asosiy yo\'l harakat qoidalari',
+        descriptionRu: 'Основные правила дорожного движения',
+        descriptionUzC: 'Асосий йўл ҳаракат қоидалари',
+        questionCount: 25 
+      },
+      { 
+        id: randomUUID(), 
+        name: 'Vehicle Safety', 
+        nameUz: 'Transport vositasi xavfsizligi', 
+        nameRu: 'Безопасность транспортного средства', 
+        nameUzC: 'Транспорт воситаси хавфсизлиги',
+        description: 'Safety procedures and checks', 
+        descriptionUz: 'Xavfsizlik tartib-qoidalari va tekshiruvlari',
+        descriptionRu: 'Процедуры безопасности и проверки',
+        descriptionUzC: 'Хавфсизлик тартиб-қоидалари ва текширувлари',
+        questionCount: 12 
+      },
+      { 
+        id: randomUUID(), 
+        name: 'Emergency Situations', 
+        nameUz: 'Favqulodda vaziyatlar', 
+        nameRu: 'Чрезвычайные ситуации', 
+        nameUzC: 'Фавқулодда вазиятлар',
+        description: 'Handling emergencies on the road', 
+        descriptionUz: 'Yo\'lda favqulodda vaziyatlarni hal qilish',
+        descriptionRu: 'Решение чрезвычайных ситуаций на дороге',
+        descriptionUzC: 'Йўлда фавқулодда вазиятларни ҳал қилиш',
+        questionCount: 8 
+      },
     ];
     
     topics.forEach(topic => {
       const topicRecord: Topic = {
         id: topic.id,
         name: topic.name,
+        nameUz: topic.nameUz,
+        nameRu: topic.nameRu,
+        nameUzC: topic.nameUzC,
         description: topic.description,
+        descriptionUz: topic.descriptionUz,
+        descriptionRu: topic.descriptionRu,
+        descriptionUzC: topic.descriptionUzC,
         questionCount: topic.questionCount,
         createdAt: new Date()
       };
@@ -87,7 +137,13 @@ export class MemStorage implements IStorage {
         id: biletId,
         number: i,
         title: `Bilet ${i}`,
+        titleUz: `Bilet ${i}`,
+        titleRu: `Билет ${i}`,
+        titleUzC: `Билет ${i}`,
         description: `Standard test bilet with 20 questions`,
+        descriptionUz: `20 ta savoldan iborat standart test bileti`,
+        descriptionRu: `Стандартный тестовый билет с 20 вопросами`,
+        descriptionUzC: `20 та саволдан иборат стандарт тест билети`,
         questionCount: 20,
         createdAt: new Date()
       };
@@ -104,14 +160,38 @@ export class MemStorage implements IStorage {
           biletId,
           topicId: randomTopic,
           questionText: `What is the correct action in this driving scenario ${j}?`,
+          questionTextUz: `Ushbu haydash stsenariysi ${j}da to'g'ri harakat nima?`,
+          questionTextRu: `Какое правильное действие в данном сценарии вождения ${j}?`,
+          questionTextUzC: `Ушбу ҳайдаш стсенарийси ${j}да тўғри ҳаракат нима?`,
           options: [
             'Stop completely and wait',
             'Proceed with caution', 
             'Yield to other traffic',
             'Continue at normal speed'
           ],
+          optionsUz: [
+            'To\'liq to\'xtab kuting',
+            'Ehtiyotkorlik bilan davom eting',
+            'Boshqa transport vositalariga yo\'l bering',
+            'Oddiy tezlikda davom eting'
+          ],
+          optionsRu: [
+            'Полностью остановиться и ждать',
+            'Продолжить с осторожностью',
+            'Уступить дорогу другому транспорту',
+            'Продолжить с обычной скоростью'
+          ],
+          optionsUzC: [
+            'Тўлиқ тўхтаб кутинг',
+            'Эҳтиёткорлик билан давом етинг',
+            'Бошқа транспорт воситаларига йўл беринг',
+            'Оддий тезликда давом етинг'
+          ],
           correctAnswer: Math.floor(Math.random() * 4),
           explanation: 'This is the correct answer based on traffic regulations.',
+          explanationUz: 'Bu yo\'l harakat qoidalariga asoslangan to\'g\'ri javob.',
+          explanationRu: 'Это правильный ответ, основанный на правилах дорожного движения.',
+          explanationUzC: 'Бу йўл ҳаракат қоидаларига асосланган тўғри жавоб.',
           imageUrl: null,
           createdAt: new Date()
         };
@@ -157,7 +237,13 @@ export class MemStorage implements IStorage {
       id,
       number: insertBilet.number,
       title: insertBilet.title,
+      titleUz: insertBilet.title, // Using same as title for now
+      titleRu: insertBilet.title, // Using same as title for now
+      titleUzC: insertBilet.title, // Using same as title for now
       description: insertBilet.description ?? null,
+      descriptionUz: insertBilet.description ?? null,
+      descriptionRu: insertBilet.description ?? null,
+      descriptionUzC: insertBilet.description ?? null,
       questionCount: insertBilet.questionCount ?? 20,
       createdAt: new Date()
     };
@@ -191,9 +277,18 @@ export class MemStorage implements IStorage {
       biletId: insertQuestion.biletId ?? null,
       topicId: insertQuestion.topicId ?? null,
       questionText: insertQuestion.questionText,
+      questionTextUz: insertQuestion.questionText, // Using same as questionText for now
+      questionTextRu: insertQuestion.questionText, // Using same as questionText for now
+      questionTextUzC: insertQuestion.questionText, // Using same as questionText for now
       options: [...insertQuestion.options],
+      optionsUz: [...insertQuestion.options], // Using same as options for now
+      optionsRu: [...insertQuestion.options], // Using same as options for now
+      optionsUzC: [...insertQuestion.options], // Using same as options for now
       correctAnswer: insertQuestion.correctAnswer,
       explanation: insertQuestion.explanation ?? null,
+      explanationUz: insertQuestion.explanation ?? null,
+      explanationRu: insertQuestion.explanation ?? null,
+      explanationUzC: insertQuestion.explanation ?? null,
       imageUrl: insertQuestion.imageUrl ?? null,
       createdAt: new Date()
     };
@@ -216,7 +311,13 @@ export class MemStorage implements IStorage {
     const topic: Topic = {
       id,
       name: insertTopic.name,
+      nameUz: insertTopic.name, // Using same as name for now
+      nameRu: insertTopic.name, // Using same as name for now
+      nameUzC: insertTopic.name, // Using same as name for now
       description: insertTopic.description ?? null,
+      descriptionUz: insertTopic.description ?? null,
+      descriptionRu: insertTopic.description ?? null,
+      descriptionUzC: insertTopic.description ?? null,
       questionCount: insertTopic.questionCount ?? 0,
       createdAt: new Date()
     };

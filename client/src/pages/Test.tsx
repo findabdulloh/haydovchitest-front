@@ -11,11 +11,13 @@ import { QuestionNavigation } from '@/components/QuestionNavigation';
 import { apiClient, type TestQuestion } from '@/lib/apiClient';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Test() {
   const params = useParams();
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { getLocalizedText } = useLanguage();
   
   const testType = params.type as string;
   const testId = params.id as string;
@@ -26,6 +28,7 @@ export default function Test() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [testStarted, setTestStarted] = useState(false);
   const [startTime, setStartTime] = useState<number>(0);
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<string, { index: number; isCorrect: boolean }>>({});
   
   const { data: questions, isLoading, error } = useQuery({
     queryKey: ['/api/test', testType, testId],
@@ -41,14 +44,40 @@ export default function Test() {
   
   const currentQuestionData = questions?.[currentQuestion - 1];
   const answeredQuestions = new Set(
-    Object.keys(answers).filter(questionId => 
-      questions?.some(q => q.id === questionId)
-    ).map((_, index) => index + 1) // Convert to question numbers for display
+    Object.keys(answers)
+      .filter(questionId => questions?.some(q => q.id === questionId))
+      .map(questionId => {
+        const questionIndex = questions?.findIndex(q => q.id === questionId);
+        return questionIndex !== undefined ? questionIndex + 1 : 0;
+      })
+      .filter(questionNumber => questionNumber > 0)
   );
   const isRealTest = testType === 'real';
   
   const handleAnswerChange = (questionId: string, answerIndex: number) => {
     setAnswers(prev => ({ ...prev, [questionId]: answerIndex }));
+    
+    // Immediate feedback - show if answer is correct
+    const question = questions?.find(q => q.id === questionId);
+    if (question) {
+      const isCorrect = answerIndex === question.correctAnswer;
+      setSelectedAnswers(prev => ({ ...prev, [questionId]: { index: answerIndex, isCorrect } }));
+    }
+    
+    // Check if this was the last unanswered question and auto-submit if enabled
+    if (questions) {
+      const newAnswers = { ...answers, [questionId]: answerIndex };
+      const answeredCount = Object.keys(newAnswers).filter(id => 
+        questions.some(q => q.id === id)
+      ).length;
+      
+      if (answeredCount === questions.length) {
+        // All questions answered - auto submit
+        setTimeout(() => {
+          handleSubmit();
+        }, 1000); // Give user 1 second to see their last answer
+      }
+    }
   };
   
   const handlePrevious = () => {
@@ -170,7 +199,11 @@ export default function Test() {
             </CardHeader>
             <CardContent className="space-y-6">
               <p className="text-base leading-relaxed" data-testid="text-question">
-                {currentQuestionData?.questionText}
+                {currentQuestionData ? getLocalizedText(
+                  currentQuestionData.questionTextUz || currentQuestionData.questionText,
+                  currentQuestionData.questionTextRu || currentQuestionData.questionText,
+                  currentQuestionData.questionTextUzC || currentQuestionData.questionText
+                ) : ''}
               </p>
               
               <RadioGroup
@@ -180,21 +213,37 @@ export default function Test() {
                 }
                 className="space-y-3"
               >
-                {currentQuestionData?.options.map((option, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <RadioGroupItem 
-                      value={index.toString()} 
-                      id={`option-${index}`}
-                      data-testid={`option-${index}`}
-                    />
-                    <Label 
-                      htmlFor={`option-${index}`} 
-                      className="flex-1 cursor-pointer"
-                    >
-                      {option}
-                    </Label>
-                  </div>
-                ))}
+                {(currentQuestionData ? getLocalizedText(
+                  currentQuestionData.optionsUz || currentQuestionData.options,
+                  currentQuestionData.optionsRu || currentQuestionData.options,
+                  currentQuestionData.optionsUzC || currentQuestionData.options
+                ) : []).map((option, index) => {
+                  const selectedAnswer = selectedAnswers[currentQuestionData?.id || ''];
+                  const isSelected = selectedAnswer && selectedAnswer.index === index;
+                  const isCorrect = currentQuestionData?.correctAnswer === index;
+                  
+                  let optionClassName = "flex items-center space-x-2 p-2 rounded-md transition-colors";
+                  if (isSelected) {
+                    optionClassName += selectedAnswer.isCorrect ? " bg-green-100 border-green-300 dark:bg-green-900/20 dark:border-green-700" : " bg-red-100 border-red-300 dark:bg-red-900/20 dark:border-red-700";
+                  }
+                  
+                  return (
+                    <div key={index} className={optionClassName}>
+                      <RadioGroupItem 
+                        value={index.toString()} 
+                        id={`option-${index}`}
+                        data-testid={`option-${index}`}
+                        className={isSelected ? (selectedAnswer.isCorrect ? "border-green-500 text-green-600" : "border-red-500 text-red-600") : ""}
+                      />
+                      <Label 
+                        htmlFor={`option-${index}`} 
+                        className={`flex-1 cursor-pointer ${isSelected ? (selectedAnswer.isCorrect ? "text-green-700 dark:text-green-300" : "text-red-700 dark:text-red-300") : ""}`}
+                      >
+                        {option}
+                      </Label>
+                    </div>
+                  );
+                })}
               </RadioGroup>
             </CardContent>
           </Card>

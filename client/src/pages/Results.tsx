@@ -5,8 +5,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { Clock, Calendar, Target, Trophy } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Results() {
+  const { getLocalizedText } = useLanguage();
+  
   const { data: chartData, isLoading: chartLoading, error: chartError } = useQuery({
     queryKey: ['/api/results/chart'],
     queryFn: () => apiClient.getTestResultsChart(),
@@ -38,14 +41,26 @@ export default function Results() {
     return (
       <div className="space-y-6">
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight">Results</h1>
+          <h1 className="text-3xl font-bold tracking-tight">
+            {getLocalizedText('Natijalar', 'Результаты', 'Натижалар')}
+          </h1>
           <p className="text-muted-foreground">
-            Track your test performance and identify areas for improvement.
+            {getLocalizedText(
+              'Test natijalari va yaxshilanishga muhtoj joylarni aniqlash.',
+              'Отслеживайте результаты тестов и выявляйте области для улучшения.',
+              'Тест натижалари ва яхшиланишга муҳтож жойларни аниқлаш.'
+            )}
           </p>
         </div>
         <Card>
           <CardContent className="pt-6">
-            <p className="text-muted-foreground">Failed to load results. Please try again later.</p>
+            <p className="text-muted-foreground">
+              {getLocalizedText(
+                'Natijalarni yuklashda xatolik yuz berdi. Keyinroq qayta urinib ko\'ring.',
+                'Не удалось загрузить результаты. Пожалуйста, попробуйте позже.',
+                'Натижаларни юклашда хатолик юз берди. Кейинроқ қайта уриниб кўринг.'
+              )}
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -55,9 +70,15 @@ export default function Results() {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight">Results</h1>
+        <h1 className="text-3xl font-bold tracking-tight">
+          {getLocalizedText('Natijalar', 'Результаты', 'Натижалар')}
+        </h1>
         <p className="text-muted-foreground">
-          Track your test performance and identify areas for improvement.
+          {getLocalizedText(
+            'Test natijalari va yaxshilanishga muhtoj joylarni aniqlang.',
+            'Отслеживайте результаты тестов и выявляйте области для улучшения.',
+            'Тест натижалари ва яхшиланишга муҳтож жойларни аниқланг.'
+          )}
         </p>
       </div>
       
@@ -67,56 +88,64 @@ export default function Results() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Questions Answered</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {getLocalizedText('Javob berilgan savollar', 'Отвеченные вопросы', 'Жавоб берилган саволлар')}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold" data-testid="text-total-answered">
                 {chartData.correct + chartData.incorrect}
               </div>
               <p className="text-xs text-muted-foreground">
-                Out of {chartData.correct + chartData.incorrect + chartData.notSubmitted} total
+                {getLocalizedText('Jami', 'Из', 'Жами')} {chartData.correct + chartData.incorrect + chartData.notSubmitted} {getLocalizedText('tadan', 'всего', 'тадан')}
               </p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Correct Answers</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {getLocalizedText('To\'g\'ri javoblar', 'Правильные ответы', 'Тўғри жавоблар')}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-chart-1" data-testid="text-correct-answers">
                 {chartData.correct}
               </div>
               <p className="text-xs text-muted-foreground">
-                {chartData.correctnessPercentage}% accuracy rate
+                {chartData.correctnessPercentage}% {getLocalizedText('aniqlik darajasi', 'точность', 'аниқлик даражаси')}
               </p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Incorrect Answers</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {getLocalizedText('Noto\'g\'ri javoblar', 'Неправильные ответы', 'Нотўғри жавоблар')}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-chart-2" data-testid="text-incorrect-answers">
                 {chartData.incorrect}
               </div>
               <p className="text-xs text-muted-foreground">
-                Areas for improvement
+                {getLocalizedText('Yaxshilanish kerak bo\'lgan sohalar', 'Области для улучшения', 'Яхшиланиш керак бўлган соҳалар')}
               </p>
             </CardContent>
           </Card>
           
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Not Submitted</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {getLocalizedText('Topshirilmagan', 'Не отправлено', 'Топширилмаган')}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-chart-3" data-testid="text-not-submitted">
                 {chartData.notSubmitted}
               </div>
               <p className="text-xs text-muted-foreground">
-                Questions skipped
+                {getLocalizedText('O\'tkazib yuborilgan savollar', 'Пропущенные вопросы', 'Ўтказиб юборилган саволлар')}
               </p>
             </CardContent>
           </Card>
@@ -125,9 +154,15 @@ export default function Results() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Recent Test Results</CardTitle>
+          <CardTitle>
+            {getLocalizedText('So\'nggi test natijalari', 'Последние результаты тестов', 'Сўнгги тест натижалари')}
+          </CardTitle>
           <CardDescription>
-            Your latest test performance and progress
+            {getLocalizedText(
+              'Sizning so\'nggi test natijalari va rivojlanishingiz',
+              'Ваши последние результаты тестов и прогресс',
+              'Сизнинг сўнгги тест натижалари ва ривожланишингиз'
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -152,7 +187,10 @@ export default function Results() {
                               variant={result.passed ? 'default' : 'destructive'}
                               data-testid={`badge-result-${result.id}`}
                             >
-                              {result.passed ? 'Passed' : 'Failed'}
+                              {result.passed 
+                                ? getLocalizedText('Muvaffaqiyatli', 'Пройден', 'Муваффақиятли')
+                                : getLocalizedText('Muvaffaqiyatsiz', 'Не пройден', 'Муваффақиятсиз')
+                              }
                             </Badge>
                           </div>
                           <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -189,7 +227,13 @@ export default function Results() {
               })
             ) : (
               <div className="text-center py-8">
-                <p className="text-muted-foreground">No test results yet. Take your first test to see your progress!</p>
+                <p className="text-muted-foreground">
+                  {getLocalizedText(
+                    'Hali test natijalari yo\'q. Rivojlanishingizni ko\'rish uchun birinchi testingizni topshiring!',
+                    'Результатов тестов пока нет. Пройдите первый тест, чтобы увидеть свой прогресс!',
+                    'Ҳали тест натижалари йўқ. Ривожланишингизни кўриш учун биринчи тестингизни топширинг!'
+                  )}
+                </p>
               </div>
             )}
           </div>

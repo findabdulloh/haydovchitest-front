@@ -65,7 +65,13 @@ export default function Bilets() {
           <TestCard
             key={bilet.id}
             title={`Bilet ${bilet.number}`}
+            titleUz={bilet.titleUz}
+            titleRu={bilet.titleRu}
+            titleUzC={bilet.titleUzC}
             description={`Standard test bilet with ${bilet.questionCount} questions`}
+            descriptionUz={bilet.descriptionUz}
+            descriptionRu={bilet.descriptionRu}
+            descriptionUzC={bilet.descriptionUzC}
             questionCount={bilet.questionCount}
             passed={bilet.passed}
             correctAnswers={bilet.correctAnswers ?? undefined}

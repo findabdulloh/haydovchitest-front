@@ -10,7 +10,14 @@ export interface AuthUser {
 export interface TestQuestion {
   id: string;
   questionText: string;
+  questionTextUz: string;
+  questionTextRu: string;
+  questionTextUzC: string;
   options: string[];
+  optionsUz: string[];
+  optionsRu: string[];
+  optionsUzC: string[];
+  correctAnswer: number;
   imageUrl?: string;
 }
 
@@ -18,7 +25,13 @@ export interface BiletInfo {
   id: string;
   number: number;
   title: string;
+  titleUz: string;
+  titleRu: string;
+  titleUzC: string;
   description: string;
+  descriptionUz: string;
+  descriptionRu: string;
+  descriptionUzC: string;
   questionCount: number;
   passed: boolean;
   correctAnswers: number | null;
@@ -27,7 +40,13 @@ export interface BiletInfo {
 export interface TopicInfo {
   id: string;
   name: string;
+  nameUz: string;
+  nameRu: string;
+  nameUzC: string;
   description: string;
+  descriptionUz: string;
+  descriptionRu: string;
+  descriptionUzC: string;
   questionCount: number;
   passed: boolean;
   bestScore: number | null;

@@ -2,10 +2,17 @@ import { Play, CheckCircle, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface TestCardProps {
   title: string;
+  titleUz?: string;
+  titleRu?: string;
+  titleUzC?: string;
   description: string;
+  descriptionUz?: string;
+  descriptionRu?: string;
+  descriptionUzC?: string;
   questionCount: number;
   passed?: boolean;
   correctAnswers?: number;
@@ -15,15 +22,35 @@ interface TestCardProps {
 
 export function TestCard({
   title,
+  titleUz,
+  titleRu,
+  titleUzC,
   description,
+  descriptionUz,
+  descriptionRu,
+  descriptionUzC,
   questionCount,
   passed,
   correctAnswers,
   onStart,
   testNumber,
 }: TestCardProps) {
+  const { getLocalizedText } = useLanguage();
+  
+  const localizedTitle = getLocalizedText(
+    titleUz || title, 
+    titleRu || title, 
+    titleUzC || title
+  );
+  
+  const localizedDescription = getLocalizedText(
+    descriptionUz || description,
+    descriptionRu || description, 
+    descriptionUzC || description
+  );
+  
   const handleStart = () => {
-    console.log(`Starting test: ${title}`);
+    console.log(`Starting test: ${localizedTitle}`);
     onStart();
   };
 
@@ -32,10 +59,10 @@ export function TestCard({
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
         <div className="space-y-1">
           <CardTitle className="text-sm font-medium">
-            {testNumber && `${testNumber}. `}{title}
+            {testNumber && `${testNumber}. `}{localizedTitle}
           </CardTitle>
           <CardDescription className="text-xs">
-            {description}
+            {localizedDescription}
           </CardDescription>
         </div>
         <div className="flex items-center space-x-2">
@@ -63,7 +90,7 @@ export function TestCard({
               </p>
             )}
           </div>
-          <Button size="sm" onClick={handleStart} data-testid={`button-start-${title.toLowerCase().replace(/\s+/g, '-')}`}>
+          <Button size="sm" onClick={handleStart} data-testid={`button-start-${localizedTitle.toLowerCase().replace(/\s+/g, '-')}`}>
             <Play className="mr-2 h-4 w-4" />
             Start Test
           </Button>
