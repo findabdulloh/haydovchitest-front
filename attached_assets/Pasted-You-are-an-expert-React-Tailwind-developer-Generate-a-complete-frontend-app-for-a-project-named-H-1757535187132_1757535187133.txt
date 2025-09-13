@@ -1,6 +1,5 @@
 You are an expert React+Tailwind developer. Generate a complete frontend app for a project named **Haydovchi Test**.
 
-
 Requirements:
 - Use React (functional components + hooks) and Tailwind CSS for styling.
 - Use React Router for navigation.
