@@ -1,24 +1,90 @@
 // Central API client for all backend communication
-const API_BASE_URL = "https://localhost:7101/api";
+import { config } from './config';
 
+const API_BASE_URL = config.apiUrl;
+
+// Authentication response interfaces
+export interface AuthResponse {
+  token: string;
+}
+
+export interface AuthError {
+  code: string;
+  message: string;
+}
+
+// User interfaces based on .NET API schema
 export interface AuthUser {
   id: string;
+  createdAt: string;
+  updatedAt: string;
   name: string;
-  phone: string;
+  phoneNumber: string;
+  role: number;
+  progress?: UserProgress;
+  setting?: UserSetting;
+}
+
+export interface UserProgress {
+  id: string;
+  userId: string;
+  updatedAt: string;
+  totalQuestions: number;
+  answeredQuestions: number;
+  correctAnswers: number;
+  correctAnswersPercentage: number;
+  totalAttempts: number;
+  correctAttempts: number;
+  accuracy: number;
+  averageSpentSecondsPerBilet: number;
+  totalBiletAttempts: number;
+  averageCorrectAnswersPerBilet: number;
+}
+
+export interface UserSetting {
+  id: string;
+  isNightMode: boolean;
+  language: string;
+  userId: string;
 }
 
 export interface TestQuestion {
   id: string;
-  questionText: string;
-  questionTextUz: string;
-  questionTextRu: string;
-  questionTextUzC: string;
-  options: string[];
-  optionsUz: string[];
-  optionsRu: string[];
-  optionsUzC: string[];
-  correctAnswer: number;
-  imageUrl?: string;
+  createdAt: string;
+  updatedAt: string;
+  photoUrl: string;
+  nameUz: string;
+  nameUzC: string;
+  nameRu: string;
+  index: number;
+  result?: QuestionResult;
+  biletId: string;
+  answerOptions: AnswerOption[];
+}
+
+export interface QuestionResult {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  timesAnswered: number;
+  timesCorrect: number;
+  lastTimeCorrect: boolean;
+  lastAnsweredAt: string;
+  userId: string;
+  questionId: string;
+  answerOptionId: string;
+}
+
+export interface AnswerOption {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  isCorrect: boolean;
+  textUz: string;
+  textUzC: string;
+  textRu: string;
+  index: number;
+  questionId: string;
 }
 
 export interface BiletInfo {
@@ -39,17 +105,46 @@ export interface BiletInfo {
 
 export interface TopicInfo {
   id: string;
-  name: string;
+  createdAt: string;
+  updatedAt: string | null;
+  bob: string;
   nameUz: string;
-  nameRu: string;
   nameUzC: string;
-  description: string;
-  descriptionUz: string;
-  descriptionRu: string;
-  descriptionUzC: string;
-  questionCount: number;
+  nameRu: string;
+  index: number;
+  timesSolved: number;
+  questionsCount: number;
+  lastUserScoreId: string | null;
+  lastUserScore: TopicScore | null;
+}
+
+export interface TopicScore {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  testType: number;
+  userId: string;
+  biletId: string;
+  topicId: string;
+  topic: string;
+  score: number;
+  totalQuestions: number;
   passed: boolean;
-  bestScore: number | null;
+  spentSeconds: number;
+  questionAttempts: QuestionAttempt[];
+}
+
+export interface QuestionAttempt {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  isCorrect: boolean;
+  userId: string;
+  questionId: string;
+  question: TestQuestion;
+  biletResultId: string;
+  topicScoresId: string;
+  answerOptionId: string;
 }
 
 export interface TestResult {
@@ -94,79 +189,96 @@ class ApiClient {
   }
 
   private async request(endpoint: string, options?: RequestInit) {
-  // normalize headers to Record<string, string>
-  const normalizedHeaders: Record<string, string> = {
-    ...(options?.headers instanceof Headers
-      ? Object.fromEntries(options.headers.entries())
-      : (options?.headers as Record<string, string> | undefined)),
-  };
+    // normalize headers to Record<string, string>
+    const normalizedHeaders: Record<string, string> = {
+      ...(options?.headers instanceof Headers
+        ? Object.fromEntries(options.headers.entries())
+        : (options?.headers as Record<string, string> | undefined)),
+    };
 
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    ...normalizedHeaders,
-  };
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      ...normalizedHeaders,
+    };
 
-  if (this.token) {
-    headers["Authorization"] = `Bearer ${this.token}`;
+    if (this.token) {
+      headers["Authorization"] = `Bearer ${this.token}`;
+    }
+
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      ...options,
+      headers,
+    });
+
+    if (!response.ok) {
+      let errorMessage = `API Error: ${response.status} ${response.statusText}`;
+      
+      try {
+        const contentType = response.headers.get("content-type");
+        
+        if (contentType?.includes("application/json")) {
+          const errorData = await response.json();
+          // Handle various .NET API error formats
+          errorMessage = errorData.message || errorData.error || errorData.title || errorMessage;
+        } else {
+          const textError = await response.text();
+          if (textError) {
+            errorMessage = textError;
+          }
+        }
+      } catch (parseError) {
+        // Keep the default error message if parsing fails
+      }
+      
+      throw new Error(errorMessage);
+    }
+
+    const contentType = response.headers.get("content-type");
+
+    if (contentType?.includes("application/json")) {
+      return response.json();
+    } else {
+      return response.text();
+    }
   }
-
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers,
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.error || `API Error: ${response.statusText}`);
-  }
-
-  const contentType = response.headers.get("content-type");
-
-  if (contentType?.includes("application/json")) {
-    return response.json();
-  } else {
-    return response.text();
-  }
-}
 
 
   // Authentication
-    async login(phoneNumber: string, password: string): Promise<string> {
-      const token: string = await this.request('/auth', {
-        method: 'POST',
-        body: JSON.stringify({ phoneNumber, password }),
-      });
-
-      localStorage.setItem("token", token);
-
-      this.setToken(token);
-      return token;
-    }
-
-
-  async register(phoneNumber: string, password: string, name: string): Promise<AuthUser> {
-    return this.request('/users', {
+  async login(phoneNumber: string, password: string): Promise<string> {
+    const response: AuthResponse = await this.request(config.endpoints.login, {
       method: 'POST',
-      body: JSON.stringify({ phoneNumber, password, name }),
+      body: JSON.stringify({ phoneNumber, password }),
+    });
+
+    const token = response.token;
+    localStorage.setItem("token", token);
+    this.setToken(token);
+    return token;
+  }
+
+
+  async register(name: string, phoneNumber: string, password: string): Promise<void> {
+    return this.request(config.endpoints.register, {
+      method: 'POST',
+      body: JSON.stringify({ name, phoneNumber, password }),
     });
   }
 
   async logout(): Promise<void> {
-    await this.request('/auth/logout', {
-      method: 'POST',
-    });
+    localStorage.removeItem("token");
+    this.setToken(null);
   }
 
   async getCurrentUser(): Promise<AuthUser | null> {
     try {
-      return await this.request('/users/me');
+      return await this.request(config.endpoints.userMe);
     } catch (error) {
       return null;
     }
   }
 
-  async updateProfile(name: string): Promise<AuthUser> {
-    return this.request('/auth/profile', {
+  async updateProfile(name: string): Promise<void> {
+    return this.request(config.endpoints.updateUser, {
       method: 'PUT',
       body: JSON.stringify({ name }),
     });
@@ -174,11 +286,11 @@ class ApiClient {
 
   // Test Data
   async getBilets(): Promise<BiletInfo[]> {
-    return this.request('/bilets');
+    return this.request(config.endpoints.bilets);
   }
 
   async getTopics(): Promise<TopicInfo[]> {
-    return this.request('/topics?pageSize=1000');
+    return this.request(`${config.endpoints.topics}?PageSize=1000`);
   }
 
   async getTestQuestions(testType: string, testId: string): Promise<TestQuestion[]> {
@@ -205,11 +317,11 @@ class ApiClient {
   }
 
   async getTestResults(): Promise<TestResult[]> {
-    return this.request('/results');
+    return this.request(config.endpoints.testResults);
   }
 
   async getUserStats(): Promise<UserStats> {
-    return this.request('/stats');
+    return this.request(config.endpoints.userStats);
   }
 
   // Convert stats to chart data format for compatibility
