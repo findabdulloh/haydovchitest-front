@@ -65,6 +65,10 @@ export default function Topics() {
           // Derive passed status and correct answers from lastUserScore
           const passed = topic.lastUserScore?.passed;
           const correctAnswers = topic.lastUserScore?.score;
+          const totalQuestions = topic.lastUserScore?.totalQuestions ?? topic.questionsCount;
+          const hasAttempted = topic.lastUserScore != null && 
+                               typeof correctAnswers === 'number' && 
+                               typeof totalQuestions === 'number';
           
           return (
             <TestCard
@@ -73,8 +77,11 @@ export default function Topics() {
               titleUz={topic.nameUz}
               titleRu={topic.nameRu}
               titleUzC={topic.nameUzC}
-              description={`Practice ${topic.questionsCount} questions on this topic`} // Required prop
-              questionCount={topic.questionsCount}
+              description={hasAttempted 
+                ? `Last attempt: ${correctAnswers}/${totalQuestions} questions`
+                : `Practice ${topic.questionsCount} questions on this topic`
+              }
+              questionCount={totalQuestions}
               passed={passed}
               correctAnswers={correctAnswers}
               onStart={() => handleStartTest(topic.id)}
