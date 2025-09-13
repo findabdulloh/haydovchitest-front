@@ -61,18 +61,26 @@ export default function Topics() {
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {topics.map((topic) => (
-          <TestCard
-            key={topic.id}
-            titleUz={topic.nameUz}
-            titleRu={topic.nameRu}
-            titleUzC={topic.nameUzC}
-            questionCount={topic.questionsCount}
-            passed={topic.passed}
-            correctAnswers={topic.correctAnswers}
-            onStart={() => handleStartTest(topic.id)}
-          />
-        ))}
+        {topics.map((topic) => {
+          // Derive passed status and correct answers from lastUserScore
+          const passed = topic.lastUserScore?.passed;
+          const correctAnswers = topic.lastUserScore?.score;
+          
+          return (
+            <TestCard
+              key={topic.id}
+              title={topic.nameUz} // Required prop - use nameUz as primary title
+              titleUz={topic.nameUz}
+              titleRu={topic.nameRu}
+              titleUzC={topic.nameUzC}
+              description={`Practice ${topic.questionsCount} questions on this topic`} // Required prop
+              questionCount={topic.questionsCount}
+              passed={passed}
+              correctAnswers={correctAnswers}
+              onStart={() => handleStartTest(topic.id)}
+            />
+          );
+        })}
       </div>
       
       <div className="text-sm text-muted-foreground">
