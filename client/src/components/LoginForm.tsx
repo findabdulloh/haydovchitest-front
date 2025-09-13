@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslations } from '@/hooks/useTranslations';
 
 export function LoginForm() {
   const [isLogin, setIsLogin] = useState(true);
@@ -13,6 +14,7 @@ export function LoginForm() {
   const [name, setName] = useState('');
   const { login, register, loading } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslations();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,19 +22,19 @@ export function LoginForm() {
       if (isLogin) {
         await login(phone, password);
         toast({
-          title: 'Welcome back!',
+          title: t('welcomeBack'),
           description: 'You have been successfully signed in.',
         });
       } else {
         await register(phone, password, name);
         toast({
-          title: 'Account created!',
+          title: t('accountCreated'),
           description: 'Your account has been created successfully.',
         });
       }
     } catch (error) {
       toast({
-        title: isLogin ? 'Sign in failed' : 'Registration failed',
+        title: isLogin ? t('signInFailed') : t('registrationFailed'),
         description: 'Please check your information and try again.',
         variant: 'destructive',
       });
@@ -52,7 +54,7 @@ export function LoginForm() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {!isLogin && (
               <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
+                <Label htmlFor="name">{t('fullName')}</Label>
                 <Input
                   id="name"
                   type="text"
@@ -65,7 +67,7 @@ export function LoginForm() {
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone Number</Label>
+              <Label htmlFor="phone">{t('phoneNumber')}</Label>
               <Input
                 id="phone"
                 type="tel"
@@ -77,7 +79,7 @@ export function LoginForm() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t('password')}</Label>
               <Input
                 id="password"
                 type="password"
@@ -94,7 +96,7 @@ export function LoginForm() {
               disabled={loading}
               data-testid={isLogin ? "button-sign-in" : "button-register"}
             >
-              {loading ? (isLogin ? 'Signing in...' : 'Creating account...') : (isLogin ? 'Sign In' : 'Create Account')}
+              {loading ? (isLogin ? `${t('signIn')}...` : `${t('createAccount')}...`) : (isLogin ? t('signIn') : t('createAccount'))}
             </Button>
           </form>
           <div className="mt-4 text-center">
@@ -104,7 +106,7 @@ export function LoginForm() {
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               data-testid="button-toggle-mode"
             >
-              {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+              {isLogin ? `Don't have an account? ${t('register')}` : `Already have an account? ${t('signIn')}`}
             </button>
           </div>
         </CardContent>
