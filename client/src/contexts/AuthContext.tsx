@@ -37,15 +37,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (phone: string, password: string) => {
     setLoading(true);
-      try {
-        const token = await apiClient.login(phone, password);
-
-        setToken(token);
-
-        const user = await apiClient.getCurrentUser();
-        setUser(user);
-      }
-      finally {
+    try {
+      const token = await apiClient.login(phone, password);
+      setToken(token);
+      
+      // Fetch user data after successful login
+      const user = await apiClient.getCurrentUser();
+      setUser(user);
+    } finally {
       setLoading(false);
     }
   };
@@ -64,7 +63,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!user) return;
     
     try {
-      const updatedUser = await apiClient.updateProfile(name);
+      await apiClient.updateProfile(name);
+      // Fetch updated user data after successful update
+      const updatedUser = await apiClient.getCurrentUser();
       setUser(updatedUser);
     } catch (error) {
       console.error('Profile update failed:', error);
@@ -75,10 +76,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (phone: string, password: string, name: string) => {
     setLoading(true);
     try {
-      const user = await apiClient.register(phone, password, name);
-      setUser(user);
-    } finally {
+      // Register the user (returns void)
+      await apiClient.register(name, phone, password);
+      
+      // Then log them in to get the token and user data
+      await login(phone, password);
+    } catch (error) {
       setLoading(false);
+      throw error;
     }
   };
 
