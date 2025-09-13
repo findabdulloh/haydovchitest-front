@@ -15,6 +15,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -32,12 +33,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkAuth();
   }, []);
 
+
+
   const login = async (phone: string, password: string) => {
     setLoading(true);
-    try {
-      const user = await apiClient.login(phone, password);
-      setUser(user);
-    } finally {
+      try {
+        const token = await apiClient.login(phone, password);
+
+        setToken(token);
+
+        const user = await apiClient.getCurrentUser();
+        setUser(user);
+      }
+      finally {
       setLoading(false);
     }
   };

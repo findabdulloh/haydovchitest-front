@@ -64,15 +64,10 @@ export default function Topics() {
         {topics.map((topic) => (
           <TestCard
             key={topic.id}
-            title={topic.name}
             titleUz={topic.nameUz}
             titleRu={topic.nameRu}
             titleUzC={topic.nameUzC}
-            description={`Targeted practice for ${topic.name.toLowerCase()} concepts`}
-            descriptionUz={topic.descriptionUz}
-            descriptionRu={topic.descriptionRu}
-            descriptionUzC={topic.descriptionUzC}
-            questionCount={topic.questionCount}
+            questionCount={topic.questionsCount}
             passed={topic.passed}
             correctAnswers={topic.correctAnswers}
             onStart={() => handleStartTest(topic.id)}
