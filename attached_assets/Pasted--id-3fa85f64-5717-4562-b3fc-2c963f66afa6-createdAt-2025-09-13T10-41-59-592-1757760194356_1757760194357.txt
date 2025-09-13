@@ -1,0 +1,126 @@
+[
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "createdAt": "2025-09-13T10:41:59.592Z",
+    "updatedAt": "2025-09-13T10:41:59.592Z",
+    "bob": "string",
+    "nameUz": "string",
+    "nameUzC": "string",
+    "nameRu": "string",
+    "index": 0,
+    "timesSolved": 0,
+    "questionsCount": 0,
+    "lastUserScoreId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "lastUserScore": {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "createdAt": "2025-09-13T10:41:59.592Z",
+      "updatedAt": "2025-09-13T10:41:59.592Z",
+      "testType": 0,
+      "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "biletId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "bilet": {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "createdAt": "2025-09-13T10:41:59.592Z",
+        "updatedAt": "2025-09-13T10:41:59.592Z",
+        "name": "string",
+        "index": 0,
+        "timesSolved": 0,
+        "lastUserScore": "string",
+        "questionsCount": 0,
+        "questions": [
+          {
+            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "createdAt": "2025-09-13T10:41:59.592Z",
+            "updatedAt": "2025-09-13T10:41:59.592Z",
+            "photoUrl": "string",
+            "nameUz": "string",
+            "nameUzC": "string",
+            "nameRu": "string",
+            "index": 0,
+            "result": {
+              "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "createdAt": "2025-09-13T10:41:59.592Z",
+              "updatedAt": "2025-09-13T10:41:59.592Z",
+              "timesAnswered": 0,
+              "timesCorrect": 0,
+              "lastTimeCorrect": true,
+              "lastAnsweredAt": "2025-09-13T10:41:59.592Z",
+              "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "questionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "answerOptionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            },
+            "biletId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "answerOptions": [
+              {
+                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                "createdAt": "2025-09-13T10:41:59.592Z",
+                "updatedAt": "2025-09-13T10:41:59.592Z",
+                "isCorrect": true,
+                "textUz": "string",
+                "textUzC": "string",
+                "textRu": "string",
+                "index": 0,
+                "questionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+              }
+            ]
+          }
+        ]
+      },
+      "topicId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "topic": "string",
+      "score": 0,
+      "totalQuestions": 0,
+      "passed": true,
+      "spentSeconds": 0,
+      "questionAttempts": [
+        {
+          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "createdAt": "2025-09-13T10:41:59.592Z",
+          "updatedAt": "2025-09-13T10:41:59.592Z",
+          "isCorrect": true,
+          "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "questionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "question": {
+            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "createdAt": "2025-09-13T10:41:59.592Z",
+            "updatedAt": "2025-09-13T10:41:59.592Z",
+            "photoUrl": "string",
+            "nameUz": "string",
+            "nameUzC": "string",
+            "nameRu": "string",
+            "index": 0,
+            "result": {
+              "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "createdAt": "2025-09-13T10:41:59.592Z",
+              "updatedAt": "2025-09-13T10:41:59.592Z",
+              "timesAnswered": 0,
+              "timesCorrect": 0,
+              "lastTimeCorrect": true,
+              "lastAnsweredAt": "2025-09-13T10:41:59.592Z",
+              "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "questionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "answerOptionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            },
+            "biletId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "answerOptions": [
+              {
+                "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                "createdAt": "2025-09-13T10:41:59.592Z",
+                "updatedAt": "2025-09-13T10:41:59.592Z",
+                "isCorrect": true,
+                "textUz": "string",
+                "textUzC": "string",
+                "textRu": "string",
+                "index": 0,
+                "questionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+              }
+            ]
+          },
+          "biletResultId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "topicScoresId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "answerOptionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        }
+      ]
+    }
+  }
+]
