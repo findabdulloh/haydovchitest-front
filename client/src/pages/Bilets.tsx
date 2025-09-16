@@ -73,8 +73,8 @@ export default function Bilets() {
             descriptionRu={`Стандартный тест-билет с ${bilet.questionsCount} вопросами`}
             descriptionUzC={`Стандарт тест билети, жами ${bilet.questionsCount} та савол`}
             questionsCount={bilet.questionsCount}
-            passed={bilet.passed}
-            correctAnswers={bilet.correctAnswers ?? undefined}
+            passed={bilet.lastUserScore?.passed}
+            correctAnswers={bilet.lastUserScore?.score}
             onStart={() => handleStartTest(bilet.id)}
           />
         ))}
