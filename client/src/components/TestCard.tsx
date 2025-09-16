@@ -13,7 +13,7 @@ interface TestCardProps {
   descriptionUz?: string;
   descriptionRu?: string;
   descriptionUzC?: string;
-  questionCount: number;
+  questionsCount: number;
   passed?: boolean;
   correctAnswers?: number;
   onStart: () => void;
@@ -29,7 +29,7 @@ export function TestCard({
   descriptionUz,
   descriptionRu,
   descriptionUzC,
-  questionCount,
+  questionsCount,
   passed,
   correctAnswers,
   onStart,
@@ -82,11 +82,11 @@ export function TestCard({
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <p className="text-xs text-muted-foreground">
-              {questionCount} questions
+              {questionsCount} questions
             </p>
             {correctAnswers !== undefined && (
               <p className="text-xs text-muted-foreground">
-                Correct: {correctAnswers}/{questionCount}
+                Correct: {correctAnswers}/{questionsCount}
               </p>
             )}
           </div>

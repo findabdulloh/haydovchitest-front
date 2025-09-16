@@ -78,10 +78,22 @@ export default function Topics() {
               titleRu={topic.nameRu}
               titleUzC={topic.nameUzC}
               description={hasAttempted 
-                ? `Last attempt: ${correctAnswers}/${totalQuestions} questions`
-                : `Practice ${topic.questionsCount} questions on this topic`
+                ? `Oxirgi urinish: ${correctAnswers}/${totalQuestions} savol`
+                : `${topic.questionsCount} ta savolli mavzuga oid test`
               }
-              questionCount={totalQuestions}
+              descriptionUz={hasAttempted 
+                ? `Oxirgi urinish: ${correctAnswers}/${totalQuestions} savol`
+                : `${topic.questionsCount} ta savolli mavzuga oid test`
+              }
+              descriptionUzC={hasAttempted 
+                ? `Охирги уриниш: ${correctAnswers}/${totalQuestions} савол`
+                : `${topic.questionsCount} та саволли мавзуга оид тест`
+              }
+              descriptionRu={hasAttempted 
+                ? `Послетная попытка: ${correctAnswers}/${totalQuestions} вопрос`
+                : `Тест по тему из ${topic.questionsCount} вопросов`
+              }
+              questionsCount={totalQuestions}
               passed={passed}
               correctAnswers={correctAnswers}
               onStart={() => handleStartTest(topic.id)}

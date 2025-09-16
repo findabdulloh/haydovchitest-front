@@ -4,9 +4,6 @@ import { config } from './config';
 const API_BASE_URL = config.apiUrl;
 
 // Authentication response interfaces
-export interface AuthResponse {
-  token: string;
-}
 
 export interface AuthError {
   code: string;
@@ -89,18 +86,14 @@ export interface AnswerOption {
 
 export interface BiletInfo {
   id: string;
-  number: number;
-  title: string;
-  titleUz: string;
-  titleRu: string;
-  titleUzC: string;
+  name: number;
   description: string;
   descriptionUz: string;
   descriptionRu: string;
   descriptionUzC: string;
-  questionCount: number;
-  passed: boolean;
-  correctAnswers: number | null;
+  questionsCount: number;
+  lastUserScoreId: string | null;
+  lastUserScore: TestScore | null;
 }
 
 export interface TopicInfo {
@@ -115,10 +108,10 @@ export interface TopicInfo {
   timesSolved: number;
   questionsCount: number;
   lastUserScoreId: string | null;
-  lastUserScore: TopicScore | null;
+  lastUserScore: TestScore | null;
 }
 
-export interface TopicScore {
+export interface TestScore {
   id: string;
   createdAt: string;
   updatedAt: string;
@@ -126,7 +119,6 @@ export interface TopicScore {
   userId: string;
   biletId: string;
   topicId: string;
-  topic: string;
   score: number;
   totalQuestions: number;
   passed: boolean;
@@ -245,12 +237,12 @@ class ApiClient {
 
   // Authentication
   async login(phoneNumber: string, password: string): Promise<string> {
-    const response: AuthResponse = await this.request(config.endpoints.login, {
+    const response: string = await this.request(config.endpoints.login, {
       method: 'POST',
       body: JSON.stringify({ phoneNumber, password }),
     });
 
-    const token = response.token;
+    const token = response;
     localStorage.setItem("token", token);
     this.setToken(token);
     return token;

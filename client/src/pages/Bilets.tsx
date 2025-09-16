@@ -64,19 +64,18 @@ export default function Bilets() {
         {bilets.map((bilet) => (
           <TestCard
             key={bilet.id}
-            title={`Bilet ${bilet.number}`}
-            titleUz={bilet.titleUz}
-            titleRu={bilet.titleRu}
-            titleUzC={bilet.titleUzC}
-            description={`Standard test bilet with ${bilet.questionCount} questions`}
-            descriptionUz={bilet.descriptionUz}
-            descriptionRu={bilet.descriptionRu}
-            descriptionUzC={bilet.descriptionUzC}
-            questionCount={bilet.questionCount}
+            title={`${bilet.name} - bilet`}
+            titleUz={`${bilet.name} - bilet`}
+            titleUzC={`${bilet.name} - билет`}
+            titleRu={`${bilet.name} - билет`}
+            description={`Standart test bileti, jami ${bilet.questionsCount} ta savol`}
+            descriptionUz={`Standart test bileti, jami ${bilet.questionsCount} ta savol`}
+            descriptionRu={`Стандартный тест-билет с ${bilet.questionsCount} вопросами`}
+            descriptionUzC={`Стандарт тест билети, жами ${bilet.questionsCount} та савол`}
+            questionsCount={bilet.questionsCount}
             passed={bilet.passed}
             correctAnswers={bilet.correctAnswers ?? undefined}
             onStart={() => handleStartTest(bilet.id)}
-            testNumber={bilet.number}
           />
         ))}
       </div>
